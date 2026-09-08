@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: easydonate-dashboard
+    name: arina-charitygoal
     runtime: node
     plan: free
     buildCommand: npm ci
