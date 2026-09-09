@@ -6,13 +6,17 @@ const express = require('express');
 const cors = require('cors'); // ต้องติดตั้งเพิ่มเพื่ออนุญาตให้หน้าเว็บดึงข้อมูลได้
 const app = express();
 const port = Number(process.env.PORT) || 3000;
-const backupPath = path.join(__dirname, 'log.json');
-const donatorBackupPath = path.join(__dirname, 'listdonator.json');
+const frontendDirectory = path.join(__dirname, 'dist');
+// Railway จะกำหนดค่านี้เมื่อเชื่อมต่อ Volume; เครื่อง local ใช้โฟลเดอร์โปรเจกต์ตามเดิม
+const dataDirectory = process.env.RAILWAY_VOLUME_MOUNT_PATH || __dirname;
+const backupPath = path.join(dataDirectory, 'log.json');
+const donatorBackupPath = path.join(dataDirectory, 'listdonator.json');
 
 app.use(cors()); // อนุญาตให้ Frontend ดึงข้อมูลจากเซิร์ฟเวอร์นี้ได้
 
-// ให้บริการหน้าเว็บ และ health check สำหรับแพลตฟอร์ม deploy
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+// ให้บริการ bundle หน้าเว็บที่ Vite สร้าง และ health check สำหรับแพลตฟอร์ม deploy
+app.use(express.static(frontendDirectory));
+app.get('/', (req, res) => res.sendFile(path.join(frontendDirectory, 'index.html')));
 app.get('/health', (req, res) => res.status(200).json({ status: 'ok' }));
 
 // เขียนไฟล์ชั่วคราวก่อน แล้วค่อยแทนที่ไฟล์จริง เพื่อไม่ให้ไฟล์สำรองค้างเป็น JSON ที่ไม่สมบูรณ์
@@ -20,6 +24,7 @@ async function backupJson(data, destinationPath) {
     const temporaryPath = `${destinationPath}.${process.pid}.${randomUUID()}.tmp`;
 
     try {
+        await fs.mkdir(path.dirname(destinationPath), { recursive: true });
         await fs.writeFile(temporaryPath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
         await fs.rename(temporaryPath, destinationPath);
     } catch (error) {

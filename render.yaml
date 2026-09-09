@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: arina-charitygoal
+    name: Arina-charity
     runtime: node
     plan: free
     buildCommand: npm ci
