@@ -5,7 +5,7 @@ const { randomUUID } = require('node:crypto');
 const express = require('express');
 const cors = require('cors'); // ต้องติดตั้งเพิ่มเพื่ออนุญาตให้หน้าเว็บดึงข้อมูลได้
 const app = express();
-const port = Number(process.env.PORT) || 3000;
+const port = Number(process.env.PORT) || 8080;
 const backupPath = path.join(__dirname, 'log.json');
 const donatorBackupPath = path.join(__dirname, 'listdonator.json');
 
@@ -13,8 +13,9 @@ app.use(cors()); // อนุญาตให้ Frontend ดึงข้อม�
 
 // ให้บริการหน้าเว็บ และ health check สำหรับแพลตฟอร์ม deploy
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.get('/health', (req, res) => res.status(200).json({ status: 'ok' }));
+//app.use('/assets', express.static(path.join(__dirname, 'assets')));
+
 
 // เขียนไฟล์ชั่วคราวก่อน แล้วค่อยแทนที่ไฟล์จริง เพื่อไม่ให้ไฟล์สำรองค้างเป็น JSON ที่ไม่สมบูรณ์
 async function backupJson(data, destinationPath) {
