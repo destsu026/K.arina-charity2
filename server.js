@@ -13,6 +13,7 @@ app.use(cors()); // อนุญาตให้ Frontend ดึงข้อม�
 
 // ให้บริการหน้าเว็บ และ health check สำหรับแพลตฟอร์ม deploy
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.get('/health', (req, res) => res.status(200).json({ status: 'ok' }));
 
 // เขียนไฟล์ชั่วคราวก่อน แล้วค่อยแทนที่ไฟล์จริง เพื่อไม่ให้ไฟล์สำรองค้างเป็น JSON ที่ไม่สมบูรณ์

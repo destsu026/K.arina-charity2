@@ -3,237 +3,346 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>สรุปยอดโดเนทเดือนกันยายน</title>
+    <title>Arina Charity Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: oklch(1 0 0);
-            --surface: oklch(0.975 0 0);
-            --ink: oklch(0.19 0.014 35);
-            --muted: oklch(0.46 0.018 35);
-            --line: oklch(0.89 0.008 35);
-            --primary: oklch(0.54 0.20 34.8);
-            --error: oklch(0.49 0.19 27);
+            --bg: #e2949b;
+            --surface: #fffaf8;
+            --surface-2: #ffffff;
+            --ink: #3a2323;
+            --muted: #7d5b57;
+            --line: rgba(58, 35, 35, 0.14);
+            --primary: #a8384a;
+            --primary-dark: #8a2c3c;
+            --on-primary: #fff6f4;
+            --error: #a8384a;
         }
 
         * { box-sizing: border-box; }
 
         body {
-            margin: 0;
-            min-height: 100vh;
-            background: var(--bg);
-            color: var(--ink);
+            /* แทนที่ ID_ของรูปภาพ ด้วย FILE_ID จริงของคุณ */
+            background-image: url('https://lh3.googleusercontent.com/d/16MsZCeVcj35-rqjtn9O1dBYTfR6tHXP7');
+            
+            /* ตั้งค่าการแสดงผลรูปพื้นหลัง */
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            
+            /* ให้พื้นหลังอยู่นิ่งเวลาเลื่อนหน้าจอ */
+            background-attachment: fixed;
             font-family: "Noto Sans Thai", "Leelawadee UI", system-ui, sans-serif;
         }
 
+        h1, h2, .cta-button { font-family: "Prompt", "Noto Sans Thai", sans-serif; }
+
         main {
-            width: min(100% - 32px, 760px);
+            width: max(80% - 32px, 820px);
             margin: 0 auto;
-            padding: 72px 0;
+            padding: 72px 0 96px;
         }
 
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            gap: 24px;
-            align-items: end;
-            margin-bottom: 26px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--line);
+        img, .image-slot { max-width: 100%; display: block; border-radius: 20px; }
+        img, .image-slot2 { max-width: 100%; display: block; border-radius: 20px; }
+
+        /* ---------- fade-in on scroll ---------- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity .7s ease-out, transform .7s ease-out;
+        }
+        .fade-in.is-visible { opacity: 1; transform: translateY(0); }
+        @media (prefers-reduced-motion: reduce) {
+            .fade-in { transition: none; opacity: 1; transform: none; }
         }
 
-        h1 {
+        /* ---------- hero ---------- */
+        .hero { text-align: center; margin-bottom: 56px; }
+        .hero h1 {
             margin: 0;
-            font-size: 1.5rem;
-            line-height: 1.3;
+            font-size: clamp(1.9rem, 4vw, 2.6rem);
             font-weight: 700;
-            text-wrap: balance;
+            letter-spacing: -0.01em;
+            color: var(--ink);
         }
-
-        .period {
-            margin: 6px 0 0;
+        .hero p {
+            max-width: 620px;
+            margin: 16px auto 0;
             color: var(--muted);
-            font-size: 0.95rem;
+            font-size: 1rem;
+            line-height: 1.7;
         }
 
-        .source {
-            flex: 0 0 auto;
-            margin: 0;
-            color: var(--muted);
-            font-size: 0.8125rem;
-            text-align: right;
+        /* ---------- content rows (text left / image right) ---------- */
+        .content-row {
+            display: flex;
+            align-items: stretch;
+            gap: 32px;
+            margin-top: 56px;
         }
+        .content-text { flex: 1 1 auto; text-align: left; min-width: 0; }
+        .content-text h2 {
+            margin: 0 0 14px;
+            font-size: 1.375rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
+        .content-text p {
+            margin: 0 0 10px;
+            color: var(--ink);
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+        .content-text p:last-child { margin-bottom: 0; }
+        .content-text .goal-line { margin: 0 0 6px; font-weight: 500; }
 
-        .summary {
-            min-height: 180px;
-            padding: 28px;
-            border: 1px solid var(--line);
-            border-radius: 16px;
+        /* ซ้อนรูปในกรอบเดียวกัน: หน่วง 200ms แล้วเฟด 600ms */
+        .image-slot {
+            --image-fade-duration: 600ms;
+            --image-fade-delay: 200ms;
+            flex: 0 0 600px;
+            width: auto;
+            aspect-ratio: 3 / 4;
+            border-radius: 20px;
+            display: flex;
+            align-items: start;
+            justify-content: center;
+            padding: 12px;
+        }
+        .image-slot__stack {
+            position: relative;
+            width: 100%;
+        }
+        .image-slot__stack img {
+            width: 100%;
+            display: block;
+            transition: opacity var(--image-fade-duration) ease-in-out var(--image-fade-delay);
+        }
+        .image-slot__base { height: auto; opacity: 1; }
+        .image-slot__hover {
+            position: absolute;
+            inset: 0;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            opacity: 0;
+            pointer-events: none;
+        }
+        @media (hover: hover) and (pointer: fine) {
+            .image-slot__stack.is-ready:hover .image-slot__base { opacity: 0; }
+            .image-slot__stack.is-ready:hover .image-slot__hover { opacity: 1; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .image-slot__stack img { transition: none; }
+        }
+        @media (max-width: 640px) {
+            .content-row { flex-direction: column; }
+            .image-slot { width: 100%; flex-basis: auto; aspect-ratio: 16 / 9; order: -1; }
+        }
+        /* ---------- realtime dashboard cards (restyled, same data/IDs as before) ---------- */
+        .dashboard { margin-top: 28px; display: grid; gap: 16px; }
+        .card {
+            padding: 24px;
+            border-radius: 18px;
             background: var(--surface);
+            border: 1px solid var(--line);
         }
-
-        .summary-label {
-            margin: 0;
-            color: var(--muted);
-            font-size: 0.9375rem;
-            font-weight: 600;
-        }
-
+        .card-label { margin: 0; color: var(--muted); font-size: 6rem; font-weight: 600; }
         .amount {
-            margin: 22px 0 0;
+            margin: 12px 0 0;
             color: var(--primary);
-            font-size: 3rem;
+            font-size: 2.25rem;
             line-height: 1;
-            font-weight: 750;
-            letter-spacing: -0.04em;
+            font-weight: 700;
+            letter-spacing: -0.03em;
             font-variant-numeric: tabular-nums;
         }
-
-        .status {
-            margin: 18px 0 0;
-            color: var(--muted);
-            font-size: 0.875rem;
+        .status { margin: 12px 0 0; color: var(--muted); font-size: 0.8125rem; }
+        .card[aria-busy="true"] .amount {
+            width: 9ch; height: 1em; border-radius: 6px;
+            background: rgba(58,35,35,0.12); color: transparent;
         }
+        .card.is-error .amount, .card.is-error .status { color: var(--error); }
 
-        .summary[aria-busy="true"] .amount {
-            width: 10ch;
-            height: 1em;
-            border-radius: 6px;
-            background: oklch(0.9 0 0);
-            color: transparent;
-        }
-
-        .summary.is-error .amount,
-        .summary.is-error .status { color: var(--error); }
-
-        .progress-summary {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 32px;
-            margin-top: 18px;
-            padding: 28px;
-            border: 1px solid var(--line);
-            border-radius: 16px;
-            background: var(--surface);
-        }
-
-        .progress-copy h2 {
-            margin: 0;
-            font-size: 1rem;
-            line-height: 1.4;
-        }
-
-        .progress-copy p {
-            margin: 8px 0 0;
-            color: var(--muted);
-            font-size: 0.875rem;
-        }
-
+        .progress-summary { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+        .progress-copy p { margin: 6px 0 0; color: var(--muted); font-size: 0.8125rem; }
         .donut {
             --progress: 0;
-            display: grid;
-            flex: 0 0 auto;
-            width: 132px;
-            aspect-ratio: 1;
-            place-items: center;
-            border-radius: 50%;
+            display: grid; flex: 0 0 auto; width: 104px; aspect-ratio: 1;
+            place-items: center; border-radius: 50%;
             background: conic-gradient(var(--primary) calc(var(--progress) * 1%), var(--line) 0);
         }
-
         .donut::before {
-            grid-area: 1 / 1;
-            width: 104px;
-            aspect-ratio: 1;
-            border-radius: 50%;
-            background: var(--surface);
-            content: "";
+            grid-area: 1 / 1; width: 82px; aspect-ratio: 1; border-radius: 50%;
+            background: var(--surface); content: "";
         }
-
         .progress-percent {
-            z-index: 1;
-            grid-area: 1 / 1;
-            color: var(--ink);
-            font-size: 1.5rem;
-            font-weight: 750;
-            letter-spacing: -0.04em;
-            font-variant-numeric: tabular-nums;
+            z-index: 1; grid-area: 1 / 1; color: var(--ink);
+            font-size: 1.25rem; font-weight: 700; letter-spacing: -0.03em; font-variant-numeric: tabular-nums;
         }
-
         .progress-summary[aria-busy="true"] .donut { background: var(--line); }
         .progress-summary.is-error .progress-percent { color: var(--error); }
 
-        @media (max-width: 560px) {
-            main { padding-top: 40px; }
-            .page-header { display: block; }
-            .source { margin-top: 14px; text-align: left; }
-            .summary { padding: 24px; }
-            .amount { font-size: 2.5rem; }
-            .progress-summary { align-items: flex-start; padding: 24px; }
-            .donut { width: 112px; }
-            .donut::before { width: 88px; }
+        .donor-list { list-style: none; padding: 0; margin: 14px 0 0; }
+        .donor-list li { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-top: 1px solid var(--line); }
+        .donor-info { min-width: 0; overflow-wrap: anywhere; }
+        .donor-info time { display: block; margin-top: 4px; color: var(--muted); font-size: 0.8125rem; }
+        .donor-amount { white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--primary); font-weight: 600; }
+
+        .goal-row + .goal-row { margin-top: 20px; }
+        .goal-row { margin-top: 20px; }
+        .goal-label { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin-bottom: 8px; font-size: 0.875rem; }
+        .goal-label span:first-child { max-width: 78%; color: var(--ink); }
+        .goal-label span:last-child { color: var(--muted); font-variant-numeric: tabular-nums; }
+        .goal-track { height: 12px; overflow: hidden; border-radius: 99px; background: var(--line); }
+        .goal-fill { width: 0; height: 100%; background: var(--primary); transition: width .4s ease-out; }
+
+        /* ---------- CTA buttons ---------- */
+        .cta-buttons {
+            display: flex; flex-wrap: wrap; gap: 16px; justify-content: center;
+            margin-top: 56px;
+        }
+        .cta-button {
+            padding: 15px 30px; border-radius: 999px; background: var(--primary);
+            color: var(--on-primary); text-decoration: none; font-weight: 600; font-size: 0.9375rem;
+            box-shadow: 0 8px 20px rgba(58, 15, 20, 0.22);
+            transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease;
+        }
+        .cta-button:hover, .cta-button:focus-visible {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 26px rgba(58, 15, 20, 0.28);
         }
 
-        @media (prefers-reduced-motion: no-preference) {
-            .amount, .status { transition: color 180ms ease-out; }
+        /* ---------- closing copy ---------- */
+        .closing { margin-top: 56px; text-align: center; }
+        .closing p { margin: 0 0 10px; color: var(--ink); font-size: 0.9375rem; line-height: 1.8; }
+        .closing p:last-child { margin-bottom: 0; font-weight: 600; }
+
+        /* ---------- footer ---------- */
+        footer {
+            margin-top: 72px;
+            display: flex; justify-content: center; align-items: center; gap: 22px;
+            flex-wrap: wrap;
         }
-        .detail-block { margin-top: 18px; padding: 28px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
-        .detail-block h2 { margin: 0; font-size: 1rem; }
-        .donor-list { list-style: none; padding: 0; margin: 20px 0 0; }
-        .donor-list li { display: flex; justify-content: space-between; gap: 16px; padding: 14px 0; border-top: 1px solid var(--line); }
-        .donor-info { min-width: 0; overflow-wrap: anywhere; }
-        .donor-info time { display: block; margin-top: 4px; color: var(--muted); font-size: .875rem; }
-        .donor-amount { white-space: nowrap; font-variant-numeric: tabular-nums; }
-        .goal-row { margin-top: 24px; }
-        .goal-label { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin-bottom: 10px; font-size: .9375rem; }
-        .goal-track { height: 14px; overflow: hidden; border-radius: 99px; background: var(--line); }
-        .goal-fill { width: 0; height: 100%; background: var(--primary); }
-        .detail-block.is-error .status { color: var(--error); }
-        @media (max-width: 560px) { .detail-block { padding: 24px; } }
+        footer a {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 44px; height: 44px; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            color: var(--ink);
+            transition: transform .2s ease, background-color .2s ease;
+        }
+        footer a:hover, footer a:focus-visible {
+            background: var(--surface-2);
+            transform: translateY(-3px);
+        }
+        footer svg { width: 20px; height: 20px; fill: currentColor; }
+
+        @media (max-width: 560px) {
+            main { padding-top: 40px; }
+        }
     </style>
 </head>
 <body>
     <main>
-        <header class="page-header">
-            <div>
-                <h1>สรุปยอดโดเนท</h1>
-                <p class="period">เฉพาะเดือนกันยายน</p>
-            </div>
-            <p class="source">ข้อมูลล่าสุดจาก EasyDonate</p>
+        <header class="hero fade-in">
+            <h1>Arina Charity Project</h1>
+            <p>ฉลองครบรอบ 2 ปีเมมเบอร์! อารินะชวนทุกคนมาร่วมทำบุญ และ ส่งต่อรอยยิ้มให้กับน้องๆสถานรับเลี้ยงเด็กกำพร้ากันค่ะ</p>
         </header>
 
-        <section class="summary" id="september-summary" aria-busy="true" aria-live="polite">
-            <p class="summary-label">ยอดโดเนทรวมทั้งหมด</p>
-            <p class="amount" id="september-total">กำลังโหลด</p>
-            <p class="status" id="summary-status">กำลังอ่านข้อมูลสำรองล่าสุด</p>
+      
+
+        <section class="content-row fade-in">
+            <div class="content-text">
+                <h2>ช่องทางการร่วมทำบุญ</h2>
+                <p>บริจาคผ่าน e-donation ➔ รับ Digital Gift &amp; Voice พิเศษจากอารินะ</p>
+                <p>สั่งซื้อสินค้า / โดเนทให้อารินะ ➔ สนับสนุนอารินะ และ ร่วมกันส่งขนมให้เด็กๆ (รายได้ส่วนหนึ่งนำไปบริจาคให้น้องๆด้วยค่ะ)</p>
+                
+                <h2>Donation Goals</h2>
+                <p class="goal-line">5,000 บาท : ทำขนมให้น้องๆ บ้านกิ่งแก้ววิบูลสันติ (ประมาณ 50 คน)</p>
+                <p class="goal-line">10,000 บาท : ทำขนมให้น้องๆ สถานสงเคราะห์เด็กบ้านเวียงพิงค์ (ประมาณ 300 คน)</p>
+                <p class="goal-line">50,000 บาท : ปลดล็อกไลฟ์สตรีมพิเศษ "เปิดกล้องเห็นตัวทำขนม"!</p>
+
+                <nav class="cta-buttons fade-in" aria-label="ช่องทางร่วมกิจกรรม">
+            <a class="cta-button" href="https://forms.gle/Ey9rrRGQPS7uW5W36">กรอกฟอร์มทำบุญ &amp; รับของขวัญ</a>
+            <a class="cta-button" href=" https://aari303-collab.github.io/KnArina-goods-preorder/">สั่งซื้อ Merch และคุกกี้โฮมเมด</a>
+            <a class="cta-button" href="https://ezdn.app/knarina">โดเนทสนับสนุนอารินะ</a>
+                </nav>
+
+                <div class="dashboard">
+                    <section class="card" id="september-summary" aria-busy="true" aria-live="polite">
+                        <p class="card-label">ยอดโดเนทรวม</p>
+                        <p class="amount" id="september-total">กำลังโหลด</p>
+                        <p class="status" id="summary-status">กำลังอ่านข้อมูลสำรองล่าสุด</p>
+                    </section>
+
+                    <section class="card progress-summary" id="donation-progress" aria-busy="true">
+                        <div class="progress-copy">
+                            <p class="card-label" style="margin:0;">ความคืบหน้ายอดโดเนท</p>
+                            <p>เทียบกับเป้าหมาย 50,000 บาท</p>
+                        </div>
+                        <div class="donut" id="progress-donut" role="progressbar" aria-label="ความคืบหน้ายอดโดเนท" aria-valuemin="0" aria-valuemax="50000" aria-valuenow="0">
+                            <span class="progress-percent" id="progress-percent">–</span>
+                        </div>
+                    </section>
+
+                    <section class="card" id="donation-goals" aria-busy="true">
+                        <p class="card-label" id="goal-status">กำลังโหลดยอดโดเนทสะสมทั้งหมด</p>
+                        <div id="goal-rows"></div>
+                    </section>
+
+                    <section class="card" id="list-donor" aria-busy="true" aria-live="polite">
+                        <p class="card-label">รายชื่อผู้บริจาคล่าสุด (List donor)</p>
+                        <p class="status">5 รายการล่าสุด</p>
+                        <ol class="donor-list" id="donor-list"></ol>
+                        <p class="status" id="donor-status">กำลังโหลดรายชื่อผู้บริจาค</p>
+                    </section>
+                </div>
+            </div>
+            <div class="image-slot" aria-hidden="true">
+                <div class="image-slot__stack">
+                    <img class="image-slot__base" src="https://lh3.googleusercontent.com/d/1miQ8DY5e-JwlruJuZnLq-tVrRMu2pEFY" width="3664" height="5291" alt="arinasmile">
+                    <img class="image-slot__hover" src="https://lh3.googleusercontent.com/d/1Uqw2guJMffQAfv88zKiu7c-2CwAPXzpd" alt="" onload="this.parentElement.classList.add('is-ready')" onerror="this.parentElement.classList.remove('is-ready')">
+                </div>
+            </div>
         </section>
 
-        <section class="progress-summary" id="donation-progress" aria-busy="true">
-            <div class="progress-copy">
-                <h2>ความคืบหน้ายอดโดเนท</h2>
-                <p>ความคืบหน้าของเดือนกันยายน</p>
-            </div>
-            <div class="donut" id="progress-donut" role="progressbar" aria-label="ความคืบหน้ายอดโดเนท" aria-valuemin="0" aria-valuemax="50000" aria-valuenow="0">
-                <span class="progress-percent" id="progress-percent">–</span>
-            </div>
-        </section>
-        <section class="detail-block" id="list-donor" aria-busy="true" aria-live="polite">
-            <h2>รายชื่อผู้บริจาค (List donor)</h2>
-            <p class="status">5 รายการล่าสุดของเดือนกันยายน 2026</p>
-            <ol class="donor-list" id="donor-list"></ol>
-            <p class="status" id="donor-status">กำลังโหลดรายชื่อผู้บริจาค</p>
+        <section class="closing fade-in">
+            <p>สิ้นสุดแคมเปญ 31 ตุลาคม 2026</p>
+            <p>ร่วมบุญหรือช่วยแชร์ ก็เป็นส่วนหนึ่งของแคมเปญอารินะได้ค่ะ มาอิ่มบุญ อิ่มใจไปด้วยกันนะคะ</p>
         </section>
 
-        <section class="detail-block" id="donation-goals" aria-busy="true">
-            <h2>เป้าหมาย (Goal)</h2>
-            <p class="status" id="goal-status">กำลังโหลดยอดโดเนทสะสมทั้งหมด</p>
-            <div id="goal-rows"></div>
-        </section>
+        <footer class="fade-in">
+            <a href="https://www.youtube.com/@kaneaki_arina" aria-label="YouTube" title="YouTube">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.6 7.2c-.25-1-1-1.7-2-1.95C17.9 5 12 5 12 5s-5.9 0-7.6.25c-1 .25-1.75.95-2 1.95C2 8.9 2 12 2 12s0 3.1.4 4.8c.25 1 1 1.7 2 1.95C6.1 19 12 19 12 19s5.9 0 7.6-.25c1-.25 1.75-.95 2-1.95.4-1.7.4-4.8.4-4.8s0-3.1-.4-4.8ZM10 15V9l5.2 3-5.2 3Z"/></svg>
+            </a>
+            <a href="https://x.com/arina_kaneaki" aria-label="Twitter / X" title="Twitter / X">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4l7.2 9.6L4.4 20H7l5.4-5.4L17 20h3l-7.5-10L19.6 4H17l-5 5-4-5H4Z"/></svg>
+            </a>
+            <a href="https://www.twitch.tv/arinakaneaki" aria-label="Twitch" title="Twitch">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3 3 6v13h5v2h3l2-2h4l4-4V3H4Zm15 9-3 3h-4l-2 2v-2H7V5h12v7Z"/><path d="M15 8h2v4h-2zM10.5 8h2v4h-2z"/></svg>
+            </a>
+            <a href="https://ezdn.app/knarina" aria-label="Easy Donate" title="Easy Donate">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-10-9.2C.6 8.8 2.2 5 6 5c2 0 3.4 1 4 2.2C10.6 6 12 5 14 5c3.8 0 5.4 3.8 4 6.8C19.5 16.4 12 21 12 21Z"/></svg>
+            </a>
+            <a href="https://www.tiktok.com/@kaneakiarina" aria-label="TikTok" title="TikTok">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3v9.7a3.3 3.3 0 1 1-2.4-3.18V7a5.7 5.7 0 1 0 4.8 5.63V9.9a6.9 6.9 0 0 0 3.6 1V8.4A4.4 4.4 0 0 1 18.6 6H16V3Z"/></svg>
+            </a>
+        </footer>
     </main>
 
     <script>
         const SEPTEMBER = 8;
         const DONOR_YEAR = 2026;
         const DONATION_GOAL = 50_000;
+        const GOAL_LABELS = {
+            5000: 'ทำขนมให้น้องๆ Lv1 บ้านกิ่งแก้ววิบูลสันติ (ประมาณ 50 คน)',
+            10000: 'ทำขนมให้น้องๆ Lv2 สถานสงเคราะห์เด็กบ้านเวียงพิงค์ (ประมาณ 300 คน)',
+            50000: 'ปลดล็อกไลฟ์สตรีมพิเศษ "เปิดกล้องเห็นตัวทำขนม"!'
+        };
         const formatter = new Intl.NumberFormat('th-TH', {
             style: 'currency',
             currency: 'THB',
@@ -250,7 +359,10 @@
 
             const dailyData = stats?.chartData?.['30d'] ?? [];
             return dailyData
-                .filter(({ date }) => new Date(`${date}T00:00:00`).getMonth() === SEPTEMBER)
+                .filter(({ date }) => {
+                    const parsed = new Date(`${date}T00:00:00`);
+                    return parsed.getMonth() === SEPTEMBER && parsed.getFullYear() === DONOR_YEAR;
+                })
                 .reduce((total, { amount }) => total + (Number(amount) || 0), 0);
         }
 
@@ -278,7 +390,7 @@
                 const stats = getStats(await response.json());
                 const septemberTotal = getSeptemberTotal(stats);
                 total.textContent = formatter.format(septemberTotal);
-                status.textContent = 'อัปเดตจาก EasyDonate และสำรองข้อมูลแล้ว';
+                status.textContent = '';
                 updateDonationProgress(septemberTotal);
                 updateGoals(septemberTotal);
             } catch (error) {
@@ -300,7 +412,8 @@
         goals.forEach(goal => {
             const row = document.createElement('div');
             row.className = 'goal-row';
-            row.innerHTML = `<div class="goal-label"><span>1–${goal.toLocaleString('th-TH')} บาท</span><span id="goal-value-${goal}">–</span></div><div class="goal-track" id="goal-track-${goal}" role="progressbar" aria-label="เป้าหมาย ${goal} บาท" aria-valuemin="0" aria-valuemax="${goal}"><div class="goal-fill" id="goal-fill-${goal}"></div></div>`;
+            const label = GOAL_LABELS[goal] ?? `1–${goal.toLocaleString('th-TH')} บาท`;
+            row.innerHTML = `<div class="goal-label"><span>${label}</span><span id="goal-value-${goal}">–</span></div><div class="goal-track" id="goal-track-${goal}" role="progressbar" aria-label="เป้าหมาย ${goal} บาท" aria-valuemin="0" aria-valuemax="${goal}"><div class="goal-fill" id="goal-fill-${goal}"></div></div>`;
             goalRows.append(row);
         });
 
@@ -386,6 +499,22 @@
 
         loadSeptemberDonationTotal();
         loadDonors();
+
+        /* ---------- fade-in on scroll ---------- */
+        const fadeTargets = document.querySelectorAll('.fade-in');
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+            fadeTargets.forEach(el => observer.observe(el));
+        } else {
+            fadeTargets.forEach(el => el.classList.add('is-visible'));
+        }
     </script>
 </body>
 </html>
