@@ -24,15 +24,10 @@
         * { box-sizing: border-box; }
 
         body {
-            /* แทนที่ ID_ของรูปภาพ ด้วย FILE_ID จริงของคุณ */
             background-image: url('https://lh3.googleusercontent.com/d/16MsZCeVcj35-rqjtn9O1dBYTfR6tHXP7');
-            
-            /* ตั้งค่าการแสดงผลรูปพื้นหลัง */
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;
-            
-            /* ให้พื้นหลังอยู่นิ่งเวลาเลื่อนหน้าจอ */
             background-attachment: fixed;
             font-family: "Noto Sans Thai", "Leelawadee UI", system-ui, sans-serif;
         }
@@ -171,7 +166,7 @@
         .card.is-error .amount, .card.is-error .status { color: var(--error); }
 
         .progress-summary { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-        .progress-copy p { margin: 6px 0 0; color: var(--muted); font-size: 0.8125rem; }
+        .progress-copy p { margin: 6px 0 0; color: var(--muted); font-size: 1.4125rem; }
         .donut {
             --progress: 0;
             display: grid; flex: 0 0 auto; width: 104px; aspect-ratio: 1;
@@ -248,51 +243,37 @@
             main { padding-top: 40px; }
         }
 
-        /* Fixed portrait beside the content; crop both layers to the 3664 x 4385 reference, anchored to the bottom. */
+        /* Keep the character attached to the viewport, outside transformed sections. */
         :root {
-            --character-width: min(42vw, 600px, calc((100vh - 24px) * 3664 / 4385));
+            --character-width: min(42vw, 600px, 66vh);
             --character-gap: 32px;
-            --character-scale: 1.2;
-            --layout-shift-x: 32px;
-            --character-expand-right: min(24px, var(--page-gutter));
             --page-gutter: max(16px, calc((100vw - 1440px) / 2));
         }
-        body { margin: 0; overflow-x: clip; }
+        body { margin: 0; }
         main {
-            position: relative;
-            left: var(--layout-shift-x);
             width: auto;
             min-width: 0;
             margin-left: var(--page-gutter);
-            margin-right: var(--page-gutter);
-        }
-        .content-row, .closing, main > footer {
-            margin-right: calc((var(--character-width) + var(--character-expand-right)) * var(--character-scale) - var(--character-expand-right) + var(--character-gap));
+            margin-right: calc(var(--page-gutter) + var(--character-width) + var(--character-gap));
         }
         .image-slot {
             position: fixed;
-            right: calc(var(--page-gutter) - var(--character-expand-right) - 16px - var(--layout-shift-x));
-            top: auto;
+            right: var(--page-gutter);
             bottom: 0;
             z-index: 1;
-            width: calc((var(--character-width) + var(--character-expand-right)) * var(--character-scale));
-            height: calc((var(--character-width) + var(--character-expand-right)) * var(--character-scale) * 4385 / 3664);
-            max-height: 100vh;
+            width: var(--character-width);
             aspect-ratio: auto;
             padding: 0;
-            overflow: hidden;
-            border-radius: 20px 20px 0 0;
             pointer-events: none;
         }
-        .image-slot__stack { pointer-events: auto; flex-shrink: 0; }
+        .image-slot__stack { pointer-events: auto; }
         @media (max-width: 640px) {
             :root {
-                --character-width: min(30vw, calc((100vh - 24px) * 3664 / 4385));
+                --character-width: 25vw;
                 --character-gap: 12px;
                 --page-gutter: 12px;
-                --layout-shift-x: 8px;
             }
-            .image-slot { width: calc((var(--character-width) + var(--character-expand-right)) * var(--character-scale)); aspect-ratio: auto; }
+            .image-slot { width: var(--character-width); aspect-ratio: auto; }
             .card { padding: 14px; }
             .card-label { font-size: 1.25rem; overflow-wrap: anywhere; }
             .amount { font-size: clamp(1.25rem, 5vw, 2.25rem); overflow-wrap: anywhere; }
@@ -332,6 +313,11 @@
             <a class="cta-button" href="https://ezdn.app/knarina">โดเนทสนับสนุนอารินะ</a>
                 </nav>
 
+                <section class="closing fade-in">
+            <p>หมดเขต 31 ตุลาคม 2026</p>
+            <p>มาอิ่มบุญ อิ่มใจไปด้วยกันนะคะ</p>
+                </section>
+
                 <div class="dashboard">
                     <section class="card" id="september-summary" aria-busy="true" aria-live="polite">
                         <p class="card-label">ยอดโดเนทรวม</p>
@@ -363,27 +349,28 @@
                 </div>
             </div>
         </section>
-
-        <section class="closing fade-in">
-            <p>สิ้นสุดแคมเปญ 31 ตุลาคม 2026</p>
-            <p>ร่วมบุญหรือช่วยแชร์ ก็เป็นส่วนหนึ่งของแคมเปญอารินะได้ค่ะ มาอิ่มบุญ อิ่มใจไปด้วยกันนะคะ</p>
-        </section>
-
+        
         <footer class="fade-in">
             <a href="https://www.youtube.com/@kaneaki_arina" aria-label="YouTube" title="YouTube">
-                <img src="https://s.magecdn.com/social/tc-youtube.svg" alt="YouTube" style="width: 40px; height: 40px;">
-            </a>
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+              <path d="M31.331,8.248c-.368-1.386-1.452-2.477-2.829-2.848-2.496-.673-12.502-.673-12.502-.673,0,0-10.007,0-12.502,.673-1.377,.37-2.461,1.462-2.829,2.848-.669,2.512-.669,7.752-.669,7.752,0,0,0,5.241,.669,7.752,.368,1.386,1.452,2.477,2.829,2.847,2.496,.673,12.502,.673,12.502,.673,0,0,10.007,0,12.502-.673,1.377-.37,2.461-1.462,2.829-2.847,.669-2.512,.669-7.752,.669-7.752,0,0,0-5.24-.669-7.752ZM12.727,20.758V11.242l8.364,4.758-8.364,4.758Z"></path>
+            </svg>
             <a href="https://x.com/arina_kaneaki" aria-label="Twitter / X" title="Twitter / X">
-                <img src="https://s.magecdn.com/social/mb-x.svg" alt="YouTube" style="width: 30px; height: 30px;">
-            </a>
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 32 32">
+              <path d="M18.42,14.009L27.891,3h-2.244l-8.224,9.559L10.855,3H3.28l9.932,14.455L3.28,29h2.244l8.684-10.095,6.936,10.095h7.576l-10.301-14.991h0Zm-3.074,3.573l-1.006-1.439L6.333,4.69h3.447l6.462,9.243,1.006,1.439,8.4,12.015h-3.447l-6.854-9.804h0Z"></path>
+            </svg>
             <a href="https://www.twitch.tv/arinakaneaki" aria-label="Twitch" title="Twitch">
-                <img src="https://s.magecdn.com/social/tc-youtube.svg" alt="YouTube" style="width: 40px; height: 40px;">
-            <a href="https://ezdn.app/knarina" aria-label="Easy Donate" title="Easy Donate">
-                <img src="https://s.magecdn.com/social/tc-youtube.svg" alt="YouTube" style="width: 40px; height: 40px;">
-            </a>
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+              <path d="M8.5,2L3.143,7.357V26.643h6.429v5.357l5.357-5.357h4.286l9.643-9.643V2H8.5ZM26.714,15.929l-4.286,4.286h-4.286l-3.75,3.75v-3.75h-4.821V4.143H26.714V15.929Z"></path>
+              <path d="M21.357 7.893H23.5V14.322H21.357z"></path>
+              <path d="M15.464 7.893H17.607V14.322H15.464z"></path>
+            </svg>
+            <!--<a href="https://ezdn.app/knarina" aria-label="Easy Donate" title="Easy Donate">E</a>-->
+                
             <a href="https://www.tiktok.com/@kaneakiarina" aria-label="TikTok" title="TikTok">
-                <img src="https://s.magecdn.com/social/tc-tiktok.svg" alt="YouTube" style="width: 40px; height: 40px;">
-            </a>
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+              <path d="M24.562,7.613c-1.508-.983-2.597-2.557-2.936-4.391-.073-.396-.114-.804-.114-1.221h-4.814l-.008,19.292c-.081,2.16-1.859,3.894-4.039,3.894-.677,0-1.315-.169-1.877-.465-1.288-.678-2.169-2.028-2.169-3.582,0-2.231,1.815-4.047,4.046-4.047,.417,0,.816,.069,1.194,.187v-4.914c-.391-.053-.788-.087-1.194-.087-4.886,0-8.86,3.975-8.86,8.86,0,2.998,1.498,5.65,3.783,7.254,1.439,1.01,3.19,1.606,5.078,1.606,4.886,0,8.86-3.975,8.86-8.86V11.357c1.888,1.355,4.201,2.154,6.697,2.154v-4.814c-1.345,0-2.597-.4-3.647-1.085Z"></path>
+            </svg>
         </footer>
     </main>
 
@@ -392,9 +379,9 @@
         const DONOR_YEAR = 2026;
         const DONATION_GOAL = 50_000;
         const GOAL_LABELS = {
-            5000: 'ทำขนมให้น้องๆ Lv1 บ้านกิ่งแก้ววิบูลสันติ (ประมาณ 50 คน)',
-            10000: 'ทำขนมให้น้องๆ Lv2 สถานสงเคราะห์เด็กบ้านเวียงพิงค์ (ประมาณ 300 คน)',
-            50000: 'ปลดล็อกไลฟ์สตรีมพิเศษ "เปิดกล้องเห็นตัวทำขนม"!'
+            5000: 'ทำขนมให้น้องๆ Lv1 บ้านกิ่งแก้ววิบูลสันติ (ประมาณ 50 คน) 5,000 บาท',
+            10000: 'ทำขนมให้น้องๆ Lv2 สถานสงเคราะห์เด็กบ้านเวียงพิงค์ (ประมาณ 300 คน) 10,000 บาท',
+            50000: 'ปลดล็อกไลฟ์สตรีมพิเศษ เปิดกล้องเห็นตัวทำขนม 50,000 บาท'
         };
         const formatter = new Intl.NumberFormat('th-TH', {
             style: 'currency',
@@ -519,12 +506,12 @@
             const section = document.getElementById('list-donor');
             const status = document.getElementById('donor-status');
             try {
-                const response = await fetch('/api/donations', { cache: 'no-store' });
-                if (!response.ok) throw new Error(`ดึงรายชื่อผู้บริจาคไม่สำเร็จ (${response.status})`);
-                const donors = getLatestSeptemberDonors(await response.json());
-                const list = document.getElementById('donor-list');
-                list.replaceChildren();
-                donors.forEach(donor => {
+                    const response = await fetch('/api/donations', { cache: 'no-store' });
+                        if (!response.ok) throw new Error(`ดึงรายชื่อผู้บริจาคไม่สำเร็จ (${response.status})`);
+                            const donors = getLatestSeptemberDonors(await response.json());
+                            const list = document.getElementById('donor-list');
+                            list.replaceChildren();
+                            donors.forEach(donor => {
                     const item = document.createElement('li');
                     const info = document.createElement('div');
                     info.className = 'donor-info';

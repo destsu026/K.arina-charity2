@@ -3,7 +3,7 @@
 # project context & guideline
 
 # command
-- npm server.js
+- node server.js
 - 
 
 
