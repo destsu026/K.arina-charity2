@@ -2,10 +2,25 @@
   "statusCode": 200,
   "data": {
     "size": 10,
-    "total": 48,
+    "total": 49,
     "totalPage": 5,
     "playingTransactionId": null,
     "histories": [
+      {
+        "id": "01M25T1BNXHN1WNHG52FJ2E5XG",
+        "donatorName": "บ่ะนอย",
+        "donateMessage": "หิวคุกกี้",
+        "donateChannel": "FEELFREEPAY",
+        "amount": 20,
+        "fee": 0.16,
+        "vat": 0.0112,
+        "net": 19.8288,
+        "createdAt": "2026-09-10T14:02:38.653Z",
+        "status": "SUCCESS",
+        "ffpPaymentType": "Q",
+        "alertShownAt": null,
+        "alertTracked": false
+      },
       {
         "id": "01M25HRFMDC066BW36P6FYCT0B",
         "donatorName": "Dray",
@@ -136,21 +151,6 @@
         "vat": 0.084,
         "net": 148.716,
         "createdAt": "2026-09-05T14:01:06.710Z",
-        "status": "SUCCESS",
-        "ffpPaymentType": "Q",
-        "alertShownAt": null,
-        "alertTracked": false
-      },
-      {
-        "id": "01M1M3HS6KVFZY7H3YTZ03XG9Y",
-        "donatorName": "Natachanok",
-        "donateMessage": "แจกหนมๆ",
-        "donateChannel": "FEELFREEPAY",
-        "amount": 50,
-        "fee": 0.4,
-        "vat": 0.028,
-        "net": 49.572,
-        "createdAt": "2026-09-03T17:02:34.195Z",
         "status": "SUCCESS",
         "ffpPaymentType": "Q",
         "alertShownAt": null,

@@ -1,23 +1,23 @@
 {
   "statusCode": 200,
   "data": {
-    "allTime": 27654,
-    "yearly": 27654,
-    "monthly": 9527,
-    "daily": 8777,
+    "allTime": 27674,
+    "yearly": 27674,
+    "monthly": 9547,
+    "daily": 0,
     "previous": {
-      "daily": 50,
+      "daily": 0,
       "monthly": 3710,
       "yearly": 0,
       "donateCount": {
-        "daily": 1,
+        "daily": 0,
         "monthly": 10
       }
     },
     "donateCount": {
-      "allTime": 48,
-      "monthly": 16,
-      "daily": 6
+      "allTime": 49,
+      "monthly": 17,
+      "daily": 0
     },
     "visitCount": 0,
     "chartData": {
@@ -48,7 +48,7 @@
         },
         {
           "date": "2026-09-10",
-          "amount": 8777
+          "amount": 8797
         }
       ],
       "30d": [
@@ -170,7 +170,7 @@
         },
         {
           "date": "2026-09-10",
-          "amount": 8777
+          "amount": 8797
         }
       ],
       "year": [
@@ -208,7 +208,7 @@
         },
         {
           "month": 8,
-          "amount": 9527
+          "amount": 9547
         },
         {
           "month": 9,
@@ -226,7 +226,7 @@
       "all": [
         {
           "year": 2026,
-          "amount": 27654
+          "amount": 27674
         }
       ]
     }

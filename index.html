@@ -37,7 +37,10 @@
             font-family: "Noto Sans Thai", "Leelawadee UI", system-ui, sans-serif;
         }
 
-        h1, h2, .cta-button { font-family: "Prompt", "Noto Sans Thai", sans-serif; }
+        h1, h2, .cta-button { 
+            font-family: "Prompt", "Noto Sans Thai", sans-serif; 
+     }
+
 
         main {
             width: max(80% - 32px, 820px);
@@ -72,7 +75,7 @@
             max-width: 620px;
             margin: 16px auto 0;
             color: var(--muted);
-            font-size: 1rem;
+            font-size: 18px;
             line-height: 1.7;
         }
 
@@ -86,14 +89,14 @@
         .content-text { flex: 1 1 auto; text-align: left; min-width: 0; }
         .content-text h2 {
             margin: 0 0 14px;
-            font-size: 1.375rem;
+            font-size: 1.575rem;
             font-weight: 700;
             color: var(--ink);
         }
         .content-text p {
             margin: 0 0 10px;
             color: var(--ink);
-            font-size: 1rem;
+            font-size: 18px;
             line-height: 1.8;
         }
         .content-text p:last-child { margin-bottom: 0; }
@@ -219,7 +222,7 @@
 
         /* ---------- closing copy ---------- */
         .closing { margin-top: 56px; text-align: center; }
-        .closing p { margin: 0 0 10px; color: var(--ink); font-size: 0.9375rem; line-height: 1.8; }
+        .closing p { margin: 0 0 10px; color: var(--ink); font-size: 1.4375rem; line-height: 1.8; font-weight: 500; }
         .closing p:last-child { margin-bottom: 0; font-weight: 600; }
 
         /* ---------- footer ---------- */
@@ -244,9 +247,66 @@
         @media (max-width: 560px) {
             main { padding-top: 40px; }
         }
+
+        /* Fixed portrait beside the content; crop both layers to the 3664 x 4385 reference, anchored to the bottom. */
+        :root {
+            --character-width: min(42vw, 600px, calc((100vh - 24px) * 3664 / 4385));
+            --character-gap: 32px;
+            --character-scale: 1.2;
+            --layout-shift-x: 32px;
+            --character-expand-right: min(24px, var(--page-gutter));
+            --page-gutter: max(16px, calc((100vw - 1440px) / 2));
+        }
+        body { margin: 0; overflow-x: clip; }
+        main {
+            position: relative;
+            left: var(--layout-shift-x);
+            width: auto;
+            min-width: 0;
+            margin-left: var(--page-gutter);
+            margin-right: var(--page-gutter);
+        }
+        .content-row, .closing, main > footer {
+            margin-right: calc((var(--character-width) + var(--character-expand-right)) * var(--character-scale) - var(--character-expand-right) + var(--character-gap));
+        }
+        .image-slot {
+            position: fixed;
+            right: calc(var(--page-gutter) - var(--character-expand-right) - 16px - var(--layout-shift-x));
+            top: auto;
+            bottom: 0;
+            z-index: 1;
+            width: calc((var(--character-width) + var(--character-expand-right)) * var(--character-scale));
+            height: calc((var(--character-width) + var(--character-expand-right)) * var(--character-scale) * 4385 / 3664);
+            max-height: 100vh;
+            aspect-ratio: auto;
+            padding: 0;
+            overflow: hidden;
+            border-radius: 20px 20px 0 0;
+            pointer-events: none;
+        }
+        .image-slot__stack { pointer-events: auto; flex-shrink: 0; }
+        @media (max-width: 640px) {
+            :root {
+                --character-width: min(30vw, calc((100vh - 24px) * 3664 / 4385));
+                --character-gap: 12px;
+                --page-gutter: 12px;
+                --layout-shift-x: 8px;
+            }
+            .image-slot { width: calc((var(--character-width) + var(--character-expand-right)) * var(--character-scale)); aspect-ratio: auto; }
+            .card { padding: 14px; }
+            .card-label { font-size: 1.25rem; overflow-wrap: anywhere; }
+            .amount { font-size: clamp(1.25rem, 5vw, 2.25rem); overflow-wrap: anywhere; }
+        }
     </style>
 </head>
 <body>
+<div class="image-slot" aria-hidden="true">
+                <div class="image-slot__stack">
+                    <img class="image-slot__base" src="https://lh3.googleusercontent.com/d/1miQ8DY5e-JwlruJuZnLq-tVrRMu2pEFY" width="3664" height="5291" alt="arinasmile">
+                    <img class="image-slot__hover" src="https://lh3.googleusercontent.com/d/1Uqw2guJMffQAfv88zKiu7c-2CwAPXzpd" alt="" onload="this.parentElement.classList.add('is-ready')" onerror="this.parentElement.classList.remove('is-ready')">
+                </div>
+            </div>
+
     <main>
         <header class="hero fade-in">
             <h1>Arina Charity Project</h1>
@@ -302,12 +362,6 @@
                     </section>
                 </div>
             </div>
-            <div class="image-slot" aria-hidden="true">
-                <div class="image-slot__stack">
-                    <img class="image-slot__base" src="https://lh3.googleusercontent.com/d/1miQ8DY5e-JwlruJuZnLq-tVrRMu2pEFY" width="3664" height="5291" alt="arinasmile">
-                    <img class="image-slot__hover" src="https://lh3.googleusercontent.com/d/1Uqw2guJMffQAfv88zKiu7c-2CwAPXzpd" alt="" onload="this.parentElement.classList.add('is-ready')" onerror="this.parentElement.classList.remove('is-ready')">
-                </div>
-            </div>
         </section>
 
         <section class="closing fade-in">
@@ -317,19 +371,18 @@
 
         <footer class="fade-in">
             <a href="https://www.youtube.com/@kaneaki_arina" aria-label="YouTube" title="YouTube">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.6 7.2c-.25-1-1-1.7-2-1.95C17.9 5 12 5 12 5s-5.9 0-7.6.25c-1 .25-1.75.95-2 1.95C2 8.9 2 12 2 12s0 3.1.4 4.8c.25 1 1 1.7 2 1.95C6.1 19 12 19 12 19s5.9 0 7.6-.25c1-.25 1.75-.95 2-1.95.4-1.7.4-4.8.4-4.8s0-3.1-.4-4.8ZM10 15V9l5.2 3-5.2 3Z"/></svg>
+                <img src="https://s.magecdn.com/social/tc-youtube.svg" alt="YouTube" style="width: 40px; height: 40px;">
             </a>
             <a href="https://x.com/arina_kaneaki" aria-label="Twitter / X" title="Twitter / X">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4l7.2 9.6L4.4 20H7l5.4-5.4L17 20h3l-7.5-10L19.6 4H17l-5 5-4-5H4Z"/></svg>
+                <img src="https://s.magecdn.com/social/mb-x.svg" alt="YouTube" style="width: 30px; height: 30px;">
             </a>
             <a href="https://www.twitch.tv/arinakaneaki" aria-label="Twitch" title="Twitch">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3 3 6v13h5v2h3l2-2h4l4-4V3H4Zm15 9-3 3h-4l-2 2v-2H7V5h12v7Z"/><path d="M15 8h2v4h-2zM10.5 8h2v4h-2z"/></svg>
-            </a>
+                <img src="https://s.magecdn.com/social/tc-youtube.svg" alt="YouTube" style="width: 40px; height: 40px;">
             <a href="https://ezdn.app/knarina" aria-label="Easy Donate" title="Easy Donate">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-10-9.2C.6 8.8 2.2 5 6 5c2 0 3.4 1 4 2.2C10.6 6 12 5 14 5c3.8 0 5.4 3.8 4 6.8C19.5 16.4 12 21 12 21Z"/></svg>
+                <img src="https://s.magecdn.com/social/tc-youtube.svg" alt="YouTube" style="width: 40px; height: 40px;">
             </a>
             <a href="https://www.tiktok.com/@kaneakiarina" aria-label="TikTok" title="TikTok">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3v9.7a3.3 3.3 0 1 1-2.4-3.18V7a5.7 5.7 0 1 0 4.8 5.63V9.9a6.9 6.9 0 0 0 3.6 1V8.4A4.4 4.4 0 0 1 18.6 6H16V3Z"/></svg>
+                <img src="https://s.magecdn.com/social/tc-tiktok.svg" alt="YouTube" style="width: 40px; height: 40px;">
             </a>
         </footer>
     </main>
